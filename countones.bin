@@ -1,0 +1,34 @@
+ ; Makena Kong
+ ; Counts Ones
+
+ ; answers to earlier questions
+ ; 1. x9928 (indicated by r1)
+ ; 2. r2 is a reference to the instructions in the data file starting at x3100
+ ; 3. r2 is incremented so that it can reference the next line in the data file 
+ ; 4. r4 starts at 10 and is incremented down to 0 - once it is 0 the loop breaks
+
+ ; registers that i used
+ ; r1: store data from x3100
+ ; r2: count 
+ ; r3: mask
+ ; r4: set mask
+ ; r5: result
+ ; r6: test register
+
+0011 0000 0000 0000   ; start the program at location 3000
+0101 010 010 1 00000  ; clear R2
+0101 100 100 1 00000  ; clear R4
+0101 101 101 1 00000  ; clear R5 
+0010 001 011111100    ; get the data at x3100 into r1
+0001 011 010 1 00001  ; load the mask into R3 (check this)
+0101 110 011 000 001  ; R6 = R3 & R1
+                      ; LOOP START
+0000 010 000000010    ; skip to NO if R6 is 0
+0001 010 010 1 00001  ; increment count
+0001 101 101 000 100  ; R5 = R4+R5
+                      ; NO
+0001 100 011 1 00000  ; alter set mask
+0001 011 011 000 011  ; left shift mask
+0000 101 111111001    ; if r3 isn't 0, go to LOOP START         
+0011 010 011110100    ; store answer (from r2) in x3101 
+1111 0000 00100101    ; halt
